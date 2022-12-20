@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="회원가입"></title>
+    </head>
+    <body>
+        <form action="/signup" method="POST" >
+            <div>
+                <div>아이디</div>
+                <input id="email" name="userEmail" type="email" placeholder="Email"/>
+<!--                <p>중복검사</p>-->
+            </div>
+            <div>
+                <div>비밀번호</div>
+                <input id="password" name="password" type="password" placeholder="Password"/>
+            </div>
+            <input class="btn btn-success" type="submit" value="가입하기"/>
+        </form>
+    </body>
+</html>

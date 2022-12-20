@@ -1,5 +1,7 @@
 package com.studysetting.domain.User;
 
+import com.studysetting.domain.User.entity.Member;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,26 +9,42 @@ import com.studysetting.domain.User.entity.dto.MemberSignUpDto;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
 public class MemberController {
-	
 	private final MemberService memberService;
-	
-	@GetMapping("")
-	//i think it is usersignup
+	//User와 관련된 경로(/login, /logout, /signup ... )을 다루는
+	//I think It is UserSignUp
 	@PostMapping("/signup")
-	public void addUser(@RequestBody MemberSignUpDto memberSignUpDto) {
+	public String signup(MemberSignUpDto memberSignUpDto) {
 		memberService.userSignUp(memberSignUpDto);
-//		return "redirect:/user/login";
+		return "redirect:/login";
 	}
-	
-	@GetMapping("/user/userup")
-	public void signupForm(Model model) {
-		model.addAttribute("memberSignUpDto", new MemberSignUpDto());
+//	@PostMapping("/signup")
+//	public String Signup(@ModelAttribute("memberSignUpDto") MemberSignUpDto memberSignUpDto, HttpServletRequest request) {
+//		return memberService.userSignUp(memberSignUpDto);
+//	}
+	@PostMapping("/logout")
+	public String logOut(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession(false);
+		if(session !=null) {
+			session.invalidate();
+		}
+		return "redirect:/home";
 	}
-	
+//	@PostMapping("/login")
+//	public String signupForm(Member member, )
+//	}
+	//이메일 중복 검사
+//	@GetMapping("/exists")
+//	public ResponseEntity<Boolean> checkEmailDuplicate(@PathVariable String userEmail) {
+//		return ResponseEntity.ok(memberService.checkEmailDuplicate(userEmail));
+//	}
 //	@GetMapping("/user/signin")
 //	public String SignUpForm(User user) {
 //		user.addAttribute("user", new UserSignUpDto());

@@ -20,14 +20,15 @@ public class Board extends BaseDateEntity {
 	@Column(name = "board_id")
 	private Long id;
 	
-	@Column(name = "title")
+	@Column(name = "title", nullable = false)
 	private String title;
 	
-	@Column(name = "content")
+	@Column(name = "content", nullable = false)
 	private String content;
-	
-	@ManyToOne
-	@JoinColumn(name = "user_id")
+
+	@Enumerated(EnumType.STRING)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
 	private Member user;
 	
 	public Board(String title, String content) {

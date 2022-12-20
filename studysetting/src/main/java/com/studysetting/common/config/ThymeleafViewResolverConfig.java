@@ -15,7 +15,7 @@ public class ThymeleafViewResolverConfig {
 	public ClassLoaderTemplateResolver templateResolver() {
 		var templateResolver = new ClassLoaderTemplateResolver();
 		
-		templateResolver.setPrefix("templates/fragment/");
+		templateResolver.setPrefix("templates/");
 		templateResolver.setCacheable(false);
 		templateResolver.setSuffix(".html");
 		templateResolver.setTemplateMode("HTML");

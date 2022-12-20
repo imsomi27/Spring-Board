@@ -55,9 +55,9 @@ public class SecurityConfig {
 				.and()
 			.formLogin()
 //				.loginPage("/home.html") //첫페이지
-				.loginPage("/login")
-//				.loginProcessingUrl("/signin") //사용자 이름과 암호를 제출할 URL
-				.defaultSuccessUrl("/") //로그인 성공 후 리다이렉트
+				.loginPage("/login.html")
+//				.loginProcessingUrl("/login") //사용자 이름과 암호를 제출할 URL
+				.defaultSuccessUrl("/home") //로그인 성공 후 리다이렉트
 				.and()
 			.logout()
 				.logoutSuccessUrl("/login") //로그아웃 성공 시 리다이렉트

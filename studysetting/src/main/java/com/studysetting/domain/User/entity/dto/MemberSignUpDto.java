@@ -6,22 +6,21 @@ import com.studysetting.domain.User.entity.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+
 @Data
 @NoArgsConstructor
 public class MemberSignUpDto{
 	//유저 생성 요청
-	private String uid; //로그인아이디 unique
-	private String email;
+//	private String uid; //로그인아이디 unique
+	private String userEmail;
 	private String password;
-	private String nickname;
+
 //	private Role role;
-	
 	public Member toEntity() {
 		return Member.builder()
-				.uid(uid)
-				.email(email)
+				.userEmail(userEmail)
 				.password(password)
-				.nickname(nickname)
 //				.role(role)
 				.build();
 	}

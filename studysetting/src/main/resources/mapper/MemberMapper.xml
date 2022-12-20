@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper>
+<!--회원가입-->
+<insert id="insertUser" parameterType="User.entity.dto.MemberSignUpDto">
+    INSERT INTO tb_Member
+    (
+    userEmail,
+    password
+    )
+    VALUES
+    (
+    #{userEmail},
+    #{password}
+    )
+</insert>
+<!--
+<select id="getUserByEmail" resultType="User.entity.dto.MemberSignUpDto">
+    SELECT *
+    FROM tb_member
+    WHERE
+</select>-->
