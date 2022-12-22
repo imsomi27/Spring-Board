@@ -1,34 +1,55 @@
 package com.studysetting.domain.User;
 
-import com.studysetting.domain.User.entity.Member;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
+import com.studysetting.domain.User.entity.dto.LoginReqDto;
 import com.studysetting.domain.User.entity.dto.MemberSignUpDto;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1")
+@RequestMapping("/v2")
 public class MemberController {
 	private final MemberService memberService;
 	//User와 관련된 경로(/login, /logout, /signup ... )을 다루는
 	//I think It is UserSignUp
-	@PostMapping("/signup")
-	public String signup(MemberSignUpDto memberSignUpDto) {
-		memberService.userSignUp(memberSignUpDto);
-		return "redirect:/login";
+
+	@GetMapping(value = "")
+	public ModelAndView getLogin() {
+		LoginReqDto loginReqDto = new LoginReqDto();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("idPw", loginReqDto);
+		modelAndView.setViewName("login");
+		return modelAndView;
 	}
+	@GetMapping("/signup")
+	public ModelAndView getSignup() {
+		MemberSignUpDto memberSignUpDto = new MemberSignUpDto();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("signupForm", memberSignUpDto);
+		modelAndView.setViewName("signup");
+		return modelAndView;
+	}
+	@PostMapping("/signup")
+	public void signup(@ModelAttribute("signupForm") MemberSignUpDto memberSignUpDto, HttpServletResponse response) throws IOException {
+		memberService.userSignUp(memberSignUpDto, response);
+	}
+
 //	@PostMapping("/signup")
 //	public String Signup(@ModelAttribute("memberSignUpDto") MemberSignUpDto memberSignUpDto, HttpServletRequest request) {
 //		return memberService.userSignUp(memberSignUpDto);
 //	}
+
+	@PostMapping("/login")
+	public void login(@ModelAttribute("idPw") LoginReqDto loginReqDto, HttpServletRequest request, HttpServletResponse response) {
+		memberService.login(loginReqDto, request, response);
+	}
+
 	@PostMapping("/logout")
 	public String logOut(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession(false);
@@ -37,9 +58,8 @@ public class MemberController {
 		}
 		return "redirect:/home";
 	}
-//	@PostMapping("/login")
-//	public String signupForm(Member member, )
-//	}
+
+
 	//이메일 중복 검사
 //	@GetMapping("/exists")
 //	public ResponseEntity<Boolean> checkEmailDuplicate(@PathVariable String userEmail) {

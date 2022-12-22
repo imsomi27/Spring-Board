@@ -10,11 +10,10 @@ import javax.servlet.http.HttpSession;
 public class WebController {
 //	private final HttpSession httpSession = null;
 	//(/ 와 /home 경로를 다루는 controller)
-	@GetMapping("/")
+	@GetMapping({"/", "/home"})
 	public String home(Model model, HttpSession session) {
 		return "home";
 	}
-
 	@GetMapping("/signup")
 	public String signup(){
 		return "signup";

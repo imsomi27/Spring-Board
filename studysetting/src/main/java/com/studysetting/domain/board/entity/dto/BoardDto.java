@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.studysetting.domain.board.entity.Board;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -20,11 +21,12 @@ public class BoardDto {
 //	id는 auto-increment
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
-	
-	public Board toEntity() {
-		return Board.builder()
-				.title(title)
-				.content(content)
-				.build();
-	}
+
+//	@Builder
+//	public Board toEntity() {
+//		return Board.builder()
+//				.title(title)
+//				.content(content)
+//				.build();
+//	}
 }

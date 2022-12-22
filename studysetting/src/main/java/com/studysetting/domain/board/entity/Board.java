@@ -31,9 +31,9 @@ public class Board extends BaseDateEntity {
 	@JoinColumn(name = "user_id", nullable = false)
 	private Member user;
 	
-	public Board(String title, String content) {
-		this.title = title;
-		this.content = content;
-	}
+//	public Board(String title, String content) {
+//		this.title = title;
+//		this.content = content;
+//	}
 	public void setUser(Member user) {this.user = user;}
 }

@@ -11,11 +11,8 @@ public class BoardSaveReqDto {
 	//게시글 생성 요청 {Req:boardId, title, content, createDate, updateDate, userId / Res:전체 보드리스트
 	@NotNull
 	private String title;
-	
 	@NotNull
 	private String content;
-	
-	
 	public Board toEntity() {
 		return Board.builder()
 				.title(title)
