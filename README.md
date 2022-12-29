@@ -1,8 +1,7 @@
 # Spring-Board
 ## Spring-Spring Security / JPA / MYSQL / Thymeleaf 
 *****
-* [0.1.1]
-##### Dec
+* [0.1.1] ##### Dec
   - Session login
   - home/signup View
   - [0.1.2]
