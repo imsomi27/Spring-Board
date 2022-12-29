@@ -1,30 +1,39 @@
 <!DOCTYPE html>
 <html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link
-              href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <title></title>
-    </head>
-    <body>
-        <div class="container" style="max-width: 600px" th:fragment="home">
-            <div class="py-5 text-center">
-                <h2>HOME 화면</h2>
-            </div>
-            <div class="row">
-                <nav>
-                    <li>
-                        <button class="w-100 btn btn-secondary btn-lg"><a th:href="@{/v2/signup}">회원 가입</a></button>
-                        <!-- th:onclick="|location.href='@{/signup}'|">-->
-                        <button class="w-100 btn btn-dark btn-lg"><a th:href="@{/v2/login}">로그인</a> </button>
-                        <button onclick="logout()">로그아웃</button>
-                        <button class="w-100 btn btn-secondary btn-lg"><a th:href="@{/upload}">새 글 쓰기</a> </button>
-                    </li>
-                </nav>
-            </div>
-<!--            <th:block th:unless="${loginUser != null}">-->
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title th:text="main"></title>
+</head>
+<body>
+<div class="container" style="max-width: 600px" th:fragment="home">
+    <div class="py-5 text-center">
+        <h2>HOME 화면</h2>
+    </div>
+    <div class="row">
+        <nav>
+            <li>
+                <!--                        로그인상태(session 유지하면서)보이게 해야함.-->
+                <!--                        <div th:if="${session.isLogin == true}">-->
+                <div th:unless="${session.isLogin == true}">
+                    <button class="w-100 btn btn-secondary btn-lg"><a th:href="@{/user/signup}">회원 가입</a></button>
+                    <button class="w-100 btn btn-dark btn-lg"><a th:href="@{/user/login}">로그인</a> </button>
+                </div>
+                <!--                        (session이 있는 사용자만)작성가능하게 하기!-->
+                <div th:if="${session.isLogin == true}">
+                    <button  th:onclick="|location.href='@{/board/upload}'|" class="w-100 btn btn-secondary btn-lg">새 글 쓰기</button>
+                    <button th:onclick="|location.href='@{/user/logout}'|">로그아웃</button>
+                </div>
+
+
+            </li>
+        </nav>
+    </div>
+    <!--            <th:block th:unless="${loginUser != null}">-->
+</div>
+</body>

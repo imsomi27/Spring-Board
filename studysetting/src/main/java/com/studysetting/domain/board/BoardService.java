@@ -1,22 +1,17 @@
 package com.studysetting.domain.board;
 
+import com.studysetting.domain.User.entity.Member;
+import com.studysetting.domain.User.entity.MemberRepository;
+import com.studysetting.domain.board.entity.*;
+import com.studysetting.domain.board.entity.dto.BoardResDto;
+import com.studysetting.domain.board.entity.dto.BoardSaveReqDto;
+import com.studysetting.domain.board.entity.dto.CommentSaveReqDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
-
-import com.studysetting.domain.User.entity.Member;
-import com.studysetting.domain.board.entity.Board;
-import com.studysetting.domain.board.entity.dto.BoardSaveReqDto;
-import org.springframework.stereotype.Service;
-
-import com.studysetting.domain.User.entity.MemberRepository;
-import com.studysetting.domain.board.entity.BoardQueryRepository;
-import com.studysetting.domain.board.entity.BoardRepository;
-import com.studysetting.domain.board.entity.dto.BoardDto;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -27,28 +22,63 @@ import java.util.List;
 public class BoardService {
 	private final BoardRepository boardRepository;
 	private final MemberRepository memberRepository;
-	private static final int PAGE_POST_COUNT = 4; //한 페이지에 존재하는 게시글 수
+	private final BoardQueryRepository boardQueryRepository;
+	private final CommentRepository commentRepository;
 
-	//게시글 등록
+	//1. 게시글 등록
 	@Transactional
-	public void createPost(BoardSaveReqDto boardSaveReqDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Member member = memberRepository.findById(Long.valueOf(String.valueOf(request.getSession().getAttribute("userId")))).orElseThrow();
-		Board board = boardRepository.save(boardSaveReqDto.toEntity());
-		response.sendRedirect("/list");
+	public void createPost(BoardSaveReqDto boardSaveReqDto, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Member member = memberRepository.findById(Long.valueOf(String.valueOf(request.getSession().getAttribute("userId")))).orElseThrow();
+			Board board = Board.builder()
+					.title(boardSaveReqDto.getTitle())
+					.content(boardSaveReqDto.getContent())
+					.user(member)
+					.build();
+			boardRepository.save(board);
+			response.sendRedirect(("/home"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
-	//게시글 삭제
+
+	//2. 전체 게시판 조회 - board를 작성한 userEmail도 보여주기 위해 custom 할 필요가 있음.
+	@Transactional(readOnly = true)
+	public List<BoardResDto> BoardList() {return boardQueryRepository.getBoardList();}
+
+	//3. 코멘트 상세 게시글 조회
+/*	@Transactional(readOnly = true)
+	public BoardDetailResDto getPost(Long boardId) {
+		Board board = boardRepository.findByBoardId(boardId).orElseThrow();
+		List<Comment> comments = boardQueryRepository.getComments(boardId);
+		return BoardDetailResDto.builder()
+
+	}*/
+	//3-1. 나중에 작성자email을 조회하면 그것들만 보이는 getMapping도 추가하고 싶음.
+
+
+	//4. 게시글 수정-작성자만 수정할 수 있음
+	//5. 게시글 삭제-게시글을 삭제하면 댓글도 삭제되고 작성자만 삭제할 수 있고 관리자는 삭제 가능.
 	@Transactional
 	public void deletePost(Long id) {
 		boardRepository.deleteById(id);
 	}
-	//게시글 검색(전체)
+	//6. 댓글 삽입
 	@Transactional
-	public List<Board> getAllBoard() {
-		return boardRepository.findAll();
+	public void createComment(Long boardId, CommentSaveReqDto commentSaveReqDto, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Member member = memberRepository.findById(Long.valueOf(String.valueOf(request.getSession().getAttribute("userId")))).orElseThrow();
+			Board board = boardRepository.findByBoardId(boardId).orElseThrow();
+			Comment comment = Comment.builder()
+					.comment(commentSaveReqDto.getComment())
+					.board(board)
+					.build();
+			comment.setUser(member);
+			commentRepository.save(comment);
+			response.sendRedirect("");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
-	//게시글 검색(상세)
-//	@Transactional
-//	public List<BoardDto> getPost(Long id) {
-//		return boardQueryRepository.
-//	}
+
 }

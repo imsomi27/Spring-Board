@@ -8,18 +8,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v2")
+@RequestMapping("/user")
 public class MemberController {
 	private final MemberService memberService;
 	//User와 관련된 경로(/login, /logout, /signup ... )을 다루는
 	//I think It is UserSignUp
 
-	@GetMapping(value = "")
+	@GetMapping(value = "/login")
 	public ModelAndView getLogin() {
 		LoginReqDto loginReqDto = new LoginReqDto();
 		ModelAndView modelAndView = new ModelAndView();
@@ -36,9 +34,10 @@ public class MemberController {
 		return modelAndView;
 	}
 	@PostMapping("/signup")
-	public void signup(@ModelAttribute("signupForm") MemberSignUpDto memberSignUpDto, HttpServletResponse response) throws IOException {
+	public void signup(@ModelAttribute("signupForm") MemberSignUpDto memberSignUpDto, HttpServletResponse response) {
 		memberService.userSignUp(memberSignUpDto, response);
 	}
+
 
 //	@PostMapping("/signup")
 //	public String Signup(@ModelAttribute("memberSignUpDto") MemberSignUpDto memberSignUpDto, HttpServletRequest request) {
@@ -50,13 +49,10 @@ public class MemberController {
 		memberService.login(loginReqDto, request, response);
 	}
 
-	@PostMapping("/logout")
-	public String logOut(HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession(false);
-		if(session !=null) {
-			session.invalidate();
-		}
-		return "redirect:/home";
+	//로그아웃 안돼요~~~ [수정]
+	@GetMapping ("/logout")
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		memberService.logout(request, response);
 	}
 
 
@@ -77,7 +73,7 @@ public class MemberController {
 //	}
 	/*
 	 * MVC pattern Model 객체 사용방법 아래는 예시
-	 * 
+	 *
 	 * @RequestMapping("url...") public String patternTrend(Model model) | model :
 	 * 데이터를 담는 key와 value로 구성된 map구조로 저장되는 어떤 객체 model.addAttribute("list",
 	 * patternTrendService.getList()) | model.addAttribute("변수명", 값(함수)) return "" |

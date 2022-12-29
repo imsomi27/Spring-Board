@@ -42,17 +42,17 @@ public class SecurityConfig {
 			//정상적인 사용자가 의도치 않은 위조요청을 보내는 것을 disable함
 			.authorizeRequests()
 				.antMatchers("/**").permitAll() // 이하 모든 url 은 모두 허가
-				.antMatchers("/admin/**").hasRole("ADMIN")
+//				.antMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated() //anyRequest,설정하지 않은 나머지는 authenticated,권한이 있으면
 				.and()
 			.formLogin()
 //				.loginPage("/home.html") //첫페이지
 				.loginPage("/home.html")
-//				.loginProcessingUrl("/login") //사용자 이름과 암호를 제출할 URL
+				.loginProcessingUrl("/login") //사용자 이름과 암호를 제출할 URL
 				.defaultSuccessUrl("/home") //로그인 성공 후 리다이렉트
 				.and()
 			.logout()
-				.logoutSuccessUrl("/login") //로그아웃 성공 시 리다이렉트
+				.logoutSuccessUrl("/home") //로그아웃 성공 시 리다이렉트
 				.invalidateHttpSession(true); //session 종료
 		return http.build();
 	}

@@ -1,5 +1,6 @@
 package com.studysetting.domain.User.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.studysetting.common.BaseDateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 @Builder
 @Entity
 @Getter
@@ -18,10 +21,13 @@ public class Member extends BaseDateEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
-	private Long id;
+	private Long memberId;
 	@Column(name = "user_email", nullable = false, unique = true, length = 35)
+	@NotNull
 	private String userEmail;
-	@Column(name = "password", nullable = false, length = 50)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@Column(name = "password", nullable = false, length = 150)
+	@NotNull
 	private String password;
 
 //	public boolean matchPassword(String password) {
@@ -32,9 +38,9 @@ public class Member extends BaseDateEntity {
 //	@JoinColumn(name="user_id")
 //	private Role roles;
 //	private List<Role> roles
-	@Enumerated(EnumType.STRING)
-	@Column(name = "user_role", nullable = false)
-	private Role role;
+//	@Enumerated(EnumType.STRING)
+//	@Column(name = "user_role", nullable = false)
+//	private Role role;
 //	@Builder
 //	public Member(String userEmail, String password) {
 //		this.userEmail = userEmail;

@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title th:text="로그인"></title>
-    </head>
-    <body>
-        <h2>로그인</h2>
-        <div>
-            <form class="form-horizontal" th:method="post" th:action="@{/v2/login}" th:object="${idPw}">
-                <div>
-                    <label for="exampleInputEmail2">아이디</label>
-                    <input id="exampleInputEmail2" name="userEmail" type="email" placeholder="ism0227@naver.com" th:field="*{userEmail}"/>
-                </div>
-                <div>
-                    <label for="pw">비밀번호</label>
-                    <input id="pw" type="password" th:field="*{password}"/>
-                </div>
-                <input class="btn btn-success" type="submit" value="로그인"/>
-            </form>
-        </div>
-    </body>
+<head>
+    <title th:text="로그인"></title>
+</head>
+<body>
+    <h2>로그인</h2>
+    <div>
+        <form class="form-horizontal" th:method="post" th:action="@{/user/login}" th:object="${idPw}">
+            <div>
+                <label for="exampleInputEmail2">아이디</label>
+                <input id="exampleInputEmail2" name="userEmail" type="email" placeholder="ism0227@naver.com" th:field="*{userEmail}"/>
+            </div>
+            <div>
+                <label for="pw">비밀번호</label>
+                <input id="pw" type="password" th:field="*{password}"/>
+            </div>
+            <button class="btn btn-success">로그인</button>
+<!--            <input class="btn btn-success" type="submit" value="로그인"/>-->
+        </form>
+    </div>
+</body>
 </html>

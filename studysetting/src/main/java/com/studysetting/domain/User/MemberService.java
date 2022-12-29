@@ -5,22 +5,20 @@ import com.studysetting.domain.User.entity.MemberRepository;
 import com.studysetting.domain.User.entity.dto.LoginReqDto;
 import com.studysetting.domain.User.entity.dto.MemberSignUpDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
-	@Autowired
+
 	private final PasswordEncoder passwordEncoder;
 	//email 중복 검사
 //	public boolean checkEmailDuplicate(String userEmail) {
@@ -49,14 +47,17 @@ public class MemberService {
 
 	//유저 가입
 	@Transactional
-	public void userSignUp(MemberSignUpDto memberSignUpDto, HttpServletResponse response) throws IOException {
-		if(memberRepository.findByUserEmail(memberSignUpDto.getUserEmail()).isPresent()) {
+	public void userSignUp(MemberSignUpDto memberSignUpDto, HttpServletResponse response){
+		try {
+			if(memberRepository.findByUserEmail(memberSignUpDto.getUserEmail()).isPresent());
 			Member member = Member.builder()
 					.userEmail(memberSignUpDto.getUserEmail())
 					.password(passwordEncoder.encode(memberSignUpDto.getPassword()))
 					.build();
 			memberRepository.save(member);
-			response.sendRedirect("/user/login");
+			response.sendRedirect("/home");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -64,18 +65,31 @@ public class MemberService {
 	@Transactional
 	public void login(LoginReqDto loginReqDto, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Member member = memberRepository.findByUserEmail(loginReqDto.getUserEmail()).get();
-			if(loginReqDto.getPassword().equals(member.getPassword())) {
-				HttpSession session = request.getSession();
-				session.setMaxInactiveInterval(1800);
-				session.setAttribute("userId", member.getId());
-				session.setAttribute("userEmail", member.getUserEmail());
-				session.setAttribute("isLogin", true);
-				response.sendRedirect("/home");
-			}
-		}
-		catch (IOException e) {
+			Member member = memberRepository.findByUserEmail(loginReqDto.getUserEmail()).orElseThrow();
+//			if(loginReqDto.getPassword().equals(member.getPassword())) {
+			if(!passwordEncoder.matches(loginReqDto.getPassword(), member.getPassword()));
+			HttpSession session = request.getSession();
+			session.setMaxInactiveInterval(1800);
+			session.setAttribute("userId", member.getMemberId());
+			session.setAttribute("userEmail", member.getUserEmail());
+			session.setAttribute("isLogin", true);
+			response.sendRedirect("/home");
+//			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
+	@Transactional
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			HttpSession session = request.getSession(false);
+			if(session !=null) {
+				session.invalidate();
+				response.sendRedirect("/home");
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

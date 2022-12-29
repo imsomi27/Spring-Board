@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title th:text="게시글"></title>
+</head>
+<body>
+<div>
+    <div class="container">
+        <table class="table table-striped table-hover">
+            <h3>게시판</h3>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">글쓴이</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">내용</th>
+                    <th scope="col">작성날짜</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board : ${boards}">
+                    <td th:text="${board.boardId}"></td>
+                    <td th:text="${board.userName}"></td>
+                    <td th:text="'[' + ${board.title} + ']'"></td>
+                <!--    <a th:href="@{/board/view/{boardId}}></a>-->
+                    <td th:text="${board.content}"></td>
+                    <td th:text="${board.createDttm}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-default pull-right" th:onclick="|location.href='@{/board/upload}'|">게시글 작성</button>
+        <div class="center text-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justifiy-content-center" th:if="${totalPage != 0}">
+                    <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span> </a> </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a> </li>
+                    <li class="page-item"><a class="page-link" href="#">2</a> </li>
+                    <li class="page-item"><a class="page-link" href="#">3</a> </li>
+                    <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&raquo;</span> </a> </li>
+                </ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+</body>

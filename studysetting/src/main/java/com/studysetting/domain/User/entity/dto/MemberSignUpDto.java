@@ -1,5 +1,6 @@
 package com.studysetting.domain.User.entity.dto;
 
+import com.studysetting.domain.User.entity.Member;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,9 @@ public class MemberSignUpDto{
 //	private String uid; //로그인아이디 unique
 	private String userEmail;
 	private String password;
-	@Builder
+	/*@Builder
 	public MemberSignUpDto(String userEmail, String password) {
 		this.userEmail = userEmail;
 		this.password = password;
-	}
+	}*/
 }
