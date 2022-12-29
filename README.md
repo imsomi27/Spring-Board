@@ -1,5 +1,5 @@
 # Spring-Board
-## Spring-Spring Security / JPA / MYSQL / Thymeleaf 
+## Spring Security / JPA / MYSQL / Thymeleaf 
 *****
 * [0.1.1] Dec 20,2022
   - Session login
