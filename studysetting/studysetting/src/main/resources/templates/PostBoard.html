@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="text/html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="게시글"></title>
+</head>
+<body>
+<main>
+    <header class="p-3 bg-dark text-white">
+        <div class="container" style="max-width: 600px">
+            <div class="py-5 text-center">
+                <h2>새 글 작성</h2>
+            </div>
+            <div class="row">
+                <form th:method="post" th:action="@{/board/upload}" th:object="${boardSaveForm}">
+                    <div>
+                        <label for="title">제목</label>
+                        <input id="title" type="text" placeholder="글 제목" th:field="*{title}"/>
+                    </div>
+                    <div>
+                        <label for="content">내용</label>
+                        <input id="content" type="text" placeholder="글 내용" th:field="*{content}"/>
+                    </div>
+                    <button class="btn btn-success">저장 하기</button>
+                    <!--            th:onclick="|location.href='/board/upload'|"-->
+                </form>
+            </div>
+        </div>
+    </header>
+</main>
+
+</body>
+</html>
