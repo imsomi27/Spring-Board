@@ -3,7 +3,7 @@
 *****
 * [0.1.1] Dec 20, 2022
   - Session login
-  - home/signup View
+  - home / signup View
   - [0.1.2] Dec 22, 2022
     + login View
 * [0.2.1] Dec 29, 2022
@@ -11,5 +11,8 @@
   - postBoard
     + querydsl
   - [0.2.2] Jan 3, 2023
-    + Board List View
+    + BoardList View
     + Pagination
+  - [0.3.1] Jan 4, 2023
+    + getBoard View
+    + comment
