@@ -22,7 +22,6 @@ public class Comment extends BaseDateEntity {
     @Column(name = "comment_id")
     private Long commentId;
 
-    @Size(min = 1)
     @Column(name = "comment")
     private String comment;
 

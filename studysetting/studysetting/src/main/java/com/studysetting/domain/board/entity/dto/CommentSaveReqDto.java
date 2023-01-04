@@ -3,9 +3,11 @@ package com.studysetting.domain.board.entity.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 public class CommentSaveReqDto {
-    private String comment;
-    /* Dto -> Entity */
+    @NotNull
+    private String content;
 }

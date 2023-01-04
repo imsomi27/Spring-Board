@@ -1,6 +1,5 @@
 package com.studysetting.domain.board;
 
-import com.studysetting.domain.board.entity.Board;
 import com.studysetting.domain.board.entity.dto.BoardResDto;
 import com.studysetting.domain.board.entity.dto.BoardSaveReqDto;
 import com.studysetting.domain.board.entity.dto.CommentSaveReqDto;
@@ -45,7 +44,7 @@ public class BoardController {
 		modelAndView.setViewName("BoardList");
 		return modelAndView;
 	}*/
-	@GetMapping("/list")
+	@GetMapping("/view")
 	public ModelAndView getBoardlist(@PageableDefault(size = 10, sort = "createDttm",direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<BoardResDto> posts = boardService.BoardList(pageable);
 		int startPage = Math.max(1, posts.getPageable().getPageNumber() -1); //현재 사용자 페이지 위치에서 인덱스 0(-1)을 포함하여 2개 밑까지 보이게 하기 위함/-1-1
@@ -57,17 +56,29 @@ public class BoardController {
 		modelAndView.setViewName("BoardList");
 		return modelAndView;
 	}
+	@PostMapping("/view/{boardId}/pComment")
+	//6. 댓글 삽입, 연쇄 삭제
+	public void postComment(@PathVariable Long boardId, @Valid @ModelAttribute("comment") CommentSaveReqDto commentSaveReqDto, HttpServletRequest request, HttpServletResponse response) {
+		boardService.createComment(boardId, commentSaveReqDto, request, response);
+	}
+
+	//상세 게시글 조회
+	@GetMapping("/view/{boardId}")
+	public ModelAndView getBoard(@PathVariable Long boardId) {
+		CommentSaveReqDto dto = new CommentSaveReqDto();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("board", boardService.getPost(boardId));
+		modelAndView.addObject("comment", dto);
+		modelAndView.setViewName("getBoard");
+		return modelAndView;
+	}
+
 	//일부 게시글 삭제
 	@DeleteMapping("/post/{boardId}")
 	public String delete(@PathVariable Long boardId) {
 		boardService.deletePost(boardId);
-		return "redirect:/board/list";
+		return "redirect:/board/view";
 	}
-	//댓글 등록
-	@PostMapping("/{boardId}/comment")
-	//6. 댓글 삽입, 연쇄 삭제
-	public void postComment(@PathVariable Long boardId, @Valid @ModelAttribute CommentSaveReqDto commentSaveReqDto, HttpServletRequest request, HttpServletResponse response) {
-		boardService.createComment(boardId, commentSaveReqDto, request, response);
-	}
+	//댓글 읽기
 
 }

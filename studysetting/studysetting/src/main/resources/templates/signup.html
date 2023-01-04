@@ -8,18 +8,25 @@
     <title th:text="회원가입"></title>
 </head>
 <body>
-    <form th:method="post" th:action="@{/user/signup}" th:object="${signupForm}">
-        <div>
-            <div>아이디</div>
-            <input name="userEmail" type="email" placeholder="Email" th:field="*{userEmail}"/>
-<!--               <p>중복검사</p>-->
-        </div>
-        <div>
-            <div>비밀번호</div>
-            <input name="password" type="password" placeholder="Password" th:field="*{password}"/>
-        </div>
-        <button class="btn btn-success">가입 하기</button>
-<!--        <input class="btn btn-success" type="submit" value="가입하기" th:onclick="|locatioin.href='@{/user/signup}'|"/>-->
-    </form>
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>회원가입 화면</h2>
+    </div>
+    <div class="row">
+        <form th:method="post" th:action="@{/user/signup}" th:object="${signupForm}">
+            <div>
+                <label for="userEmail">아이디</label>
+                <input id="userEmail" type="email" placeholder="Email" th:field="*{userEmail}"/>
+                <!--               <p>중복검사</p>-->
+            </div>
+            <div>
+                <label for="password">비밀전호</label>
+                <input id="password" type="password" placeholder="Password" th:field="*{password}"/>
+            </div>
+            <button class="btn btn-success">가입 하기</button>
+            <!--        <input class="btn btn-success" type="submit" value="가입하기" th:onclick="|locatioin.href='@{/user/signup}'|"/>-->
+        </form>
+    </div>
+</div>
 </body>
 </html>

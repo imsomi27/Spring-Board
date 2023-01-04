@@ -11,7 +11,7 @@
     <title th:text="main"></title>
 </head>
 <body>
-<div class="container" style="max-width: 600px" th:fragment="home">
+<div class="container" style="max-width: 600px">
     <div class="py-5 text-center">
         <h2>HOME 화면</h2>
     </div>
@@ -28,7 +28,7 @@
                 <!--                        (session이 있는 사용자만)작성가능하게 하기!-->
                 <div th:if="${session.isLogin == true}">
                     <button  th:onclick="|location.href='@{/board/upload}'|" class="w-100 btn btn-secondary btn-lg">새 글 쓰기</button>
-                    <button class="w-100 btn btn-outline-secondary btn-lg"><a th:href="@{/board/list}">목록</a> </button>
+                    <button class="w-100 btn btn-outline-secondary btn-lg"><a th:href="@{/board/view}">목록</a> </button>
                     <button class="btn btn-light" th:onclick="|location.href='@{/user/logout}'|">로그아웃</button>
                 </div>
             </li>

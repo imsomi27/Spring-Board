@@ -10,14 +10,43 @@
   <title th:text="게시글"></title>
 </head>
 <style>
-  .layout {
-    width: 500px;
-    margin: 0 auto;
-  }
+
 </style>
 <body>
-  <div class="layout">
-
+<h3>게시글</h3>
+<div class="container" style="max-width: 600px">
+  <div class="row">
+    <div>
+      <h5 th:text="${board.title}"></h5>
+      <p th:text="'작성자 : ' + ${board.userName}"></p>
+    </div>
+    <div>
+      <div style="border:1px solid; padding: 10px;" th:text="${board.content}"></div>
+      <div th:if="${session.isLogin == true}">
+        <form th:method="post" th:action="@{'/board/view/' + ${board.boardId} + '/pComment'}" th:object="${comment}">
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">긍정 댓글</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+          <button class="btn btn-success">등록</button>
+        </form>
+      </div>
+      <div>
+        <table class="table table-hover">
+          <h5>댓글</h5>
+          <thead>
+          </thead>
+          <tbody>
+            <tr th:each="apply : ${board.comments}">
+              <td th:text="${comment}"></td>
+              <td th:text="${apply.createDttm}"></td>
+              <td th:text="${apply.user.userEmail}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
+</div>
 </body>
 </html>

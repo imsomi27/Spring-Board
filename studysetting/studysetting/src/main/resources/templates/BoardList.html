@@ -27,8 +27,7 @@
                 <tr th:each="board : ${posts}">
                     <td th:text="${board.boardId}"></td>
                     <td th:text="${board.writer}"></td>
-                    <td th:text="${board.title}"></td>
-                <!--    <a th:href="@{/board/view/{boardId}}></a>-->
+                    <td><a th:href="@{'/board/view/' + ${board.boardId}}" th:text="${board.title}"></a></td>
                     <td th:text="${board.content}"></td>
                     <td th:text="${board.createDttm}"></td>
                 </tr>
@@ -38,11 +37,11 @@
         <div style="text-align: center;">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center" th:if="${totalPage != 0}">
-                    <li class="page-item"><a class="page-link" th:href="@{/board/list(page=${posts.pageable.pageNumber -1})}" aria-label="Previous"><span aria-hidden="true">&laquo;</span> </a> </li>
+                    <li class="page-item"><a class="page-link" th:href="@{/board/view(page=${posts.pageable.pageNumber -1})}" aria-label="Previous"><span aria-hidden="true">&laquo;</span> </a> </li>
                     <li class="" th:classdappend="${page == posts.pageable.pageNumber + 1} ? 'disabled'" th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                        <a th:href="@{/board/list(page=${page -1})}" th:text="${page}"></a>
+                        <a th:href="@{/board/view(page=${page -1})}" th:text="${page}"></a>
                     </li>
-                    <li class="page-item"><a class="page-link" th:href="@{/board/list(page=${posts.pageable.pageNumber +1})}" aria-label="Next"><span aria-hidden="true">&raquo;</span> </a> </li>
+                    <li class="page-item"><a class="page-link" th:href="@{/board/view(page=${posts.pageable.pageNumber +1})}" aria-label="Next"><span aria-hidden="true">&raquo;</span> </a> </li>
                 </ul>
             </nav>
         </div>

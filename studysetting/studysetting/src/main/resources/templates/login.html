@@ -5,7 +5,10 @@
     <title th:text="로그인"></title>
 </head>
 <body>
-    <h2>로그인</h2>
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>로그인</h2>
+    </div>
     <div>
         <form class="form-horizontal" th:method="post" th:action="@{/user/login}" th:object="${idPw}">
             <div>
@@ -17,8 +20,9 @@
                 <input id="pw" type="password" th:field="*{password}"/>
             </div>
             <button class="btn btn-success">로그인</button>
-<!--            <input class="btn btn-success" type="submit" value="로그인"/>-->
+            <!--            <input class="btn btn-success" type="submit" value="로그인"/>-->
         </form>
     </div>
+</div>
 </body>
 </html>

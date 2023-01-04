@@ -3,6 +3,7 @@ package com.studysetting.domain.board;
 import com.studysetting.domain.User.entity.Member;
 import com.studysetting.domain.User.entity.MemberRepository;
 import com.studysetting.domain.board.entity.*;
+import com.studysetting.domain.board.entity.dto.BoardDetailResDto;
 import com.studysetting.domain.board.entity.dto.BoardResDto;
 import com.studysetting.domain.board.entity.dto.BoardSaveReqDto;
 import com.studysetting.domain.board.entity.dto.CommentSaveReqDto;
@@ -38,7 +39,7 @@ public class BoardService {
 					.user(member)
 					.build();
 			boardRepository.save(board);
-			response.sendRedirect(("/board/list"));
+			response.sendRedirect("/board/view");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -51,15 +52,22 @@ public class BoardService {
 	}
 
 	//3. 코멘트 상세 게시글 조회
-/*	@Transactional(readOnly = true)
+	@Transactional(readOnly = true)
 	public BoardDetailResDto getPost(Long boardId) {
-		Board board = boardRepository.findByBoardId(boardId).orElseThrow();
+		Board board = boardRepository.findById(boardId).orElseThrow();
 		List<Comment> comments = boardQueryRepository.getComments(boardId);
 		return BoardDetailResDto.builder()
-
-	}*/
+				.boardId(board.getBoardId())
+				.title(board.getTitle())
+				.content(board.getContent())
+				.createDttm(board.getCreateDttm())
+				.updateDttm(board.getUpdateDttm())
+				.userId(board.getUser().getMemberId())
+				.userName(board.getUser().getUserEmail())
+				.comments(comments)
+				.build();
+	}
 	//3-1. 나중에 작성자email을 조회하면 그것들만 보이는 getMapping도 추가하고 싶음.
-
 
 	//4. 게시글 수정-작성자만 수정할 수 있음
 	//5. 게시글 삭제-게시글을 삭제하면 댓글도 삭제되고 작성자만 삭제할 수 있고 관리자는 삭제 가능.
@@ -67,22 +75,22 @@ public class BoardService {
 	public void deletePost(Long id) {
 		boardRepository.deleteById(id);
 	}
+
 	//6. 댓글 삽입
 	@Transactional
 	public void createComment(Long boardId, CommentSaveReqDto commentSaveReqDto, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Member member = memberRepository.findById(Long.valueOf(String.valueOf(request.getSession().getAttribute("userId")))).orElseThrow();
-			Board board = boardRepository.findByBoardId(boardId).orElseThrow();
+			Board board = boardRepository.findById(boardId).orElseThrow();
 			Comment comment = Comment.builder()
-					.comment(commentSaveReqDto.getComment())
+					.comment(commentSaveReqDto.getContent())
 					.board(board)
+					.user(member)
 					.build();
-			comment.setUser(member);
 			commentRepository.save(comment);
 			response.sendRedirect("");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
-
 }
