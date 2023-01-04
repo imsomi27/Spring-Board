@@ -13,6 +13,6 @@
   - [0.2.2] Jan 3, 2023
     + BoardList View
     + Pagination
-  - [0.3.1] Jan 4, 2023
+  - [0.2.3] Jan 4, 2023
     + getBoard View
     + comment
